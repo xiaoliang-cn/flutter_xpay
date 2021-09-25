@@ -1,0 +1,29 @@
+PODS:
+  - AlipaySDK-iOS (15.7.9)
+  - Flutter (1.0.0)
+  - xpay (0.0.1):
+    - AlipaySDK-iOS (~> 15.7.9)
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - xpay (from `.symlinks/plugins/xpay/ios`)
+
+SPEC REPOS:
+  trunk:
+    - AlipaySDK-iOS
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  xpay:
+    :path: ".symlinks/plugins/xpay/ios"
+
+SPEC CHECKSUMS:
+  AlipaySDK-iOS: 94ff4c0e17c5e7d126b8207596d5033006534c25
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  xpay: 7d94da1fac270475091fb3d5f074aaa37c1e7360
+
+PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
+
+COCOAPODS: 1.11.2

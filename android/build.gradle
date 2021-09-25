@@ -18,6 +18,10 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
+        // 支付宝 SDK AAR 包所需的配置
+        flatDir {
+            dirs project(':xpay').file('libs')
+        }
     }
 }
 
@@ -43,6 +47,7 @@ android {
     defaultConfig {
         minSdkVersion 16
     }
+    buildToolsVersion '30.0.3'
 }
 
 dependencies {

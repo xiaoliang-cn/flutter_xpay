@@ -1,3 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.xl.xpay.xpay">
+  <queries>
+    <package android:name="com.eg.android.AlipayGphone" />
+    <package android:name="hk.alipay.wallet" />
+</queries>
 </manifest>

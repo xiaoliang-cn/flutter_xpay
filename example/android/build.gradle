@@ -3,6 +3,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+
     }
 
     dependencies {
@@ -15,11 +16,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-
-        // 支付宝 SDK AAR 包所需的配置
-        flatDir {
-            dirs 'libs'
-        }
 
     }
 }

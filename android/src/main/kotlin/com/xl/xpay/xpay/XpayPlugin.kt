@@ -37,7 +37,6 @@ class XpayPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
-        xPayPluginDelegate.cancel();
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {

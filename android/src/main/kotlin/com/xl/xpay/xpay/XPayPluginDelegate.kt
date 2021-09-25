@@ -12,12 +12,12 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 //支付插件
-class XPayPluginDelegate : CoroutineScope {
-     var activity: Activity? = null
+class XPayPluginDelegate {
+    var activity: Activity? = null
     fun handlerMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "aliIsAliPayInstalled" -> isAliPayInstalled(result)
-            "alipay" -> aliPay(call, result)
+            "aliPay" -> aliPay(call, result)
             "aliVersion" -> getAliPayVersion(result)
             else -> {
                 result.notImplemented()
@@ -26,23 +26,16 @@ class XPayPluginDelegate : CoroutineScope {
 
     }
 
-    fun cancel() {
-        job.cancel()
-    }
-
-    var job = Job()
-
-    override val coroutineContext: CoroutineContext = Dispatchers.Main + job
 
     private fun aliPay(call: MethodCall, result: MethodChannel.Result) {
-        launch {
+        GlobalScope.launch(Dispatchers.IO) {
             if (call.argument<Int>("payEnv") == 1) {
                 EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX)
             } else {
                 EnvUtils.setEnv(EnvUtils.EnvEnum.ONLINE)
             }
             val payResult = doPayTask(call.argument("order") ?: "")
-            withContext(Dispatchers.Main) {
+            launch(Dispatchers.Main) {
                 result.success(payResult)
             }
         }

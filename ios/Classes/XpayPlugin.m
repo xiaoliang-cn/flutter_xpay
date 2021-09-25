@@ -1,8 +1,4 @@
 #import "XpayPlugin.h"
-#import <AlipaySDK/alipaySDK.h>
-
-__weak XpayPlugin* __xpayPlugin;
-
 #if __has_include(<xpay/xpay-Swift.h>)
 #import <xpay/xpay-Swift.h>
 #else
@@ -11,23 +7,8 @@ __weak XpayPlugin* __xpayPlugin;
 // https://forums.swift.org/t/swift-static-libraries-dont-copy-generated-objective-c-header/19816
 #import "xpay-Swift.h"
 #endif
-
 @implementation XpayPlugin
--(id)init{
-    if(self = [super init]){
-        
-        __xpayPlugin = self;
-    }
-    return self;
++(void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+    [SwiftXpayPlugin registerWithRegistrar:registrar];
 }
--(void)dealloc{
-    
-}
-
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-
-  [SwiftXpayPlugin registerWithRegistrar:registrar];
- 
-}
-
 @end
