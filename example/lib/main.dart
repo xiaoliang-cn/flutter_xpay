@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:xpay/xpay.dart';
 
 void main() {
@@ -48,13 +49,31 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: GestureDetector(
-          onTap: () async {
-            await Xpay.aliPay(
-                'alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2021002156668698&biz_content=%7B%22body%22%3A%22XPassword%22%2C%22out_trade_no%22%3A%22092520334011552%22%2C%22passback_params%22%3A%220.1%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22subject%22%3A%22XPasswordVip%22%2C%22timeout_express%22%3A%2260m%22%2C%22total_amount%22%3A%22200%22%7D&charset=utf-8&format=json&method=alipay.trade.app.pay&sign=RRo2c7XAVbjQpRFfWtWObt%2BrDRM%2FzA9XIhlJOsf2fKNMe9LFR2t8r36TxCdTPxdl9RW52mBeSPEZ3PpUHPRJPfsrS3M7OUfOoCRyx61gPLKjkFe0xsotl2aHhyR78aIDtZ5e%2BnLNwyB4mf9OJjQUYNqYhyGih07EvDfGKp38yq6Z8JZDewDawW1dPrxK99X7hn7jc9F%2FNrB2hGngZGoOXmtKC88x%2F3JcjhceOapLJbX21SgXqDyg%2BzGu6t5krbELboF0yiHX3Ec6PHGWo0OFiM4J0a%2F3EooQUcwhOyaXLig573ROwZhjLMx1RTBCqTKp0Oxo78r5zxw5H16TMBh9hA%3D%3D&sign_type=RSA2&timestamp=2021-09-25+20%3A33%3A40&version=1.0');
-          },
-          child: Center(
-            child: Text('Running on: $_platformVersion\n'),
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () async {
+                    var version = await Xpay.getAliPayVersion;
+                    Logger().d(version);
+                  },
+                  child: Text('Running on: $_platformVersion\n')),
+              ElevatedButton(
+                  onPressed: () async {
+                    var result = await Xpay.aliPay(
+                        'charset\u003dutf-8\u0026biz_content\u003d%7B%22timeout_express%22%3A%2230m%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%2C%22total_amount%22%3A1%2C%22subject%22%3A%221%22%2C%22body%22%3A%22XPassword%22%2C%22out_trade_no%22%3A%22102020465512740%22%7D\u0026method\u003dalipay.trade.app.pay\u0026app_id\u003d2021002156668698\u0026sign_type\u003dRSA2\u0026version\u003d1.0\u0026timestamp\u003d2021-10-20+20%3A46%3A55\u0026sign\u003djr0x9m9nHXYauTB94M%2FuaqKVLeEDvMvVae3rv2SAtAmELo3o7iyWNi8paGtnQc5lhcwzrdcbAl3PD3FMBRtqsdAMnnZV94Om%2FuGImkvOj6gyn2ns7KwxxdFy%2F6eoMRgkVzbNyjwspJwGSe5IzohE5AjzabQtsOkySwXDiMMl1DvuuyBi1fmFeqf%2B6M2dMn3uUKUbxd827B6bhdGxX98QHQeP6jpJi%2BSF4V8SBuPEesqm67DSOs5Rhz4LRoLqjshiTwDcG3zTfnWk2lSw4cT3FEfNcwbiIJbsi%2Blqt2vTxD%2B9fCT5g6uyrQ%2Fs1d1MUgTwddL31BdxgwsYW9rnlfLRWA%3D%3D');
+                    Logger().d(result);
+                  },
+                  child: const Text('aliPay')),
+              ElevatedButton(
+                  onPressed: () async {
+                    var result = await Xpay.aliIsAliPayInstalled();
+                    Logger().d(result);
+                  },
+                  child: const Text('isInstallAliPay'))
+            ],
           ),
         ),
       ),

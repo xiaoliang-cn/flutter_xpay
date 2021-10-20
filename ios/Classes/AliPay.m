@@ -14,7 +14,6 @@ __weak AliPay* __alipay;
 
 
 @implementation AliPay
-#if 0
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   /*FlutterMethodChannel* */channel = [FlutterMethodChannel
       methodChannelWithName:@"com.xl/xpay"
@@ -22,7 +21,6 @@ __weak AliPay* __alipay;
     AliPay* instance = [[AliPay alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];
 }
-#endif
 
 -(id)init{
     if(self = [super init]){
@@ -37,16 +35,25 @@ static FlutterMethodChannel* channel;
    AliPay* instace =  [[AliPay alloc] init];
     return instace;
 }
-
+ 
 - (void)handleMethodCall_Common:(FlutterMethodCall*)call result:(FlutterResult)result{
+    self.callback=result;
     if([@"aliPay" isEqualToString:call.method]){
         [self aliPay:call result:result];
     }else if([@"aliVersion" isEqualToString:call.method]){
         [self aliVersion:call result:result];
-    }else{
+    }else if([@"aliIsAliPayInstalled" isEqualToString:call.method]){
+        [self aliIsAliPayInstalled:call result:result];
+    }
+    else{
         result(FlutterMethodNotImplemented);
     }
 }
+- (void)aliIsAliPayInstalled:(FlutterMethodCall*)call result:(FlutterResult)result{
+    BOOL isAliPayInstalled = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"alipays://"]]||[[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"alipay://"]];
+      result(@(isAliPayInstalled));
+}
+
 
 //9.0之后适配
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
@@ -62,6 +69,7 @@ static FlutterMethodChannel* channel;
 -(BOOL)handleOpenURL:(NSURL *)url{
     if([url.host isEqualToString:@"safepay"]){
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            
             [self onPayResultReceived:resultDic];
         }];
         //授权跳转支付宝钱包
@@ -99,18 +107,22 @@ static FlutterMethodChannel* channel;
 -(void) _aliPay:(FlutterMethodCall*)call result:(FlutterResult)result
    urlscheme:(NSString*)urlScheme{
     self.callback = result;
+    __weak AliPay* __self = self;
+
     [[AlipaySDK defaultService] payOrder:call.arguments[@"order"] fromScheme:urlScheme callback:^(NSDictionary *resultDic) {
-        [self onPayResultReceived:resultDic];
+        [__self onPayResultReceived:resultDic];
     }];
 }
 
 -(void)onPayResultReceived:(NSDictionary*)resultDic{
+    NSLog(@'-------resultDic--------');
+    NSLog(resultDic);
     if(self.callback!=nil){
-        NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithDictionary:resultDic];
-        [mutableDictionary setValue:@"iOS" forKey:@"platform"];
-        self.callback(mutableDictionary);
-        self.callback = nil;
-    }
+         NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithDictionary:resultDic];
+         [mutableDictionary setValue:@"iOS" forKey:@"platform"];
+         self.callback(mutableDictionary);
+         self.callback = nil;
+     }
     
 }
 

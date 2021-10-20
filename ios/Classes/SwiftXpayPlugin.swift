@@ -15,7 +15,7 @@ public class SwiftXpayPlugin: NSObject, FlutterPlugin {
     }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    let alipay : AliPay = aliPayPlugin!
+    let alipay = aliPayPlugin!
     alipay.handleMethodCall_Common(call, result: result);
   }
 }

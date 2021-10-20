@@ -10,8 +10,12 @@ class Xpay {
     return version;
   }
 
-  static Future<Map> aliPay(String order) async {
-    return await _channel.invokeMethod('aliPay', {'order': order});
+  static Future<String> aliPay(String order) async {
+    return await _channel.invokeMethod('aliPay', {'order': order, 'payEnv': 0});
+  }
+
+  static Future<bool> aliIsAliPayInstalled() async {
+    return await _channel.invokeMethod('aliIsAliPayInstalled');
   }
 }
 

@@ -35,6 +35,7 @@ class XPayPluginDelegate {
                 EnvUtils.setEnv(EnvUtils.EnvEnum.ONLINE)
             }
             val payResult = doPayTask(call.argument("order") ?: "")
+            println(payResult)
             launch(Dispatchers.Main) {
                 result.success(payResult)
             }
@@ -46,6 +47,7 @@ class XPayPluginDelegate {
         val alipay = PayTask(activity)
         return alipay.pay(order, true)
     }
+
 
     private fun isAliPayInstalled(result: MethodChannel.Result) {
         val manager = activity?.packageManager
